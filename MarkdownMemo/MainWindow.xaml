@@ -1,0 +1,187 @@
+﻿<mvvm:FileEditorWindowView x:Class="MarkdownMemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:MarkdownMemo"
+        xmlns:mvvm="clr-namespace:My.Mvvm;assembly=My.Mvvm"
+        xmlns:vm="clr-namespace:MarkdownMemo.ViewModel;assembly=MarkdownMemo.ViewModel"
+        Title="{Binding Path=Title}" 
+        Height="768" 
+        Width="900">
+
+    <mvvm:FileEditorWindowView.DataContext>
+        <vm:MainwindowViewModel/>
+    </mvvm:FileEditorWindowView.DataContext>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="New" 
+                        Executed="FileNewExecuted"
+                        CanExecute="FileNewCanExecute"/>
+        <CommandBinding Command="Open"
+                        Executed="FileOpenExecuted"
+                        CanExecute="FileOpenCanExecute"/>
+        <CommandBinding Command="Save"
+                        Executed="FileSaveExecuted"
+                       CanExecute="FileSaveCanExecute"/>
+        <CommandBinding Command="SaveAs"
+                        Executed="FileSaveAsExecuted"
+                       CanExecute="FileSaveAsCanExecute"/>
+    </Window.CommandBindings>
+
+    <mvvm:MessengerBehavior.Actions>
+        <mvvm:ActionCollection SourceObject="{x:Static mvvm:Messenger.Default}">
+            <c:DialogBoxAction/>
+            <c:OpenFileDialogAction/>
+            <c:SaveFileDialogAction/>
+            <c:PreviewAction/>
+            <c:CloseAction/>
+        </mvvm:ActionCollection>
+    </mvvm:MessengerBehavior.Actions>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="400"/>
+        </Grid.ColumnDefinitions>
+
+        <Menu Grid.Row="0" Grid.ColumnSpan="3" >
+            <MenuItem Header="文件(_F)">
+                <MenuItem Header="新建(_N)"
+                          InputGestureText="Ctrl+N"
+                          Command="New"/>
+                <MenuItem Header="打开(_O)..." 
+                          InputGestureText="Ctrl+O"
+                          Command="Open"/>
+                <Separator/>
+                <MenuItem Header="保存(_S)" 
+                          InputGestureText="Ctrl+S"
+                          Command="Save"/>
+                <MenuItem Header="另存为(_A)..." 
+                          InputGestureText="Ctrl+Shift+S"
+                          Command="SaveAs"/>
+                <Separator/>
+                <MenuItem Header="HTML形式保存(_W)..." 
+                          Command="{Binding Path=SaveHtmlCommand}"/>
+                <Separator/>
+                <MenuItem Header="退出(_X)" 
+                          Command="{Binding Path=ExitCommand}"
+                          InputGestureText="Alt+F4" />
+            </MenuItem>
+            <MenuItem Header="工具(_T)">
+                <MenuItem Header="Gists..."/>
+            </MenuItem>
+        </Menu>
+
+        <GridSplitter Name="GridSplitter1"
+                      Grid.Column="1"
+                      Grid.Row="1"
+                      ShowsPreview="True"
+                      HorizontalAlignment="Center"
+                      Width="5"/>
+
+        <TextBox x:Name="textBox1"
+                 Grid.Column="0" 
+                 Grid.Row="1"
+                 AcceptsReturn="True" 
+                 AcceptsTab="True"
+                 FontFamily="Consolas" 
+                 FontSize="14" 
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"
+                 Text="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 AllowDrop="True"
+                 PreviewDragOver="textBox1_previewDragOver"
+                 PreviewDrop="textBox1_previewDrop"
+                 c:TextBoxHelper.CaretPosition="{Binding CaretIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                 TextWrapping="WrapWithOverflow"/>
+
+        <TabControl Grid.Column="2"
+                    Grid.Row="1"
+                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Stretch" >
+
+            <TabItem Header="实时浏览">
+                <WebBrowser Name="prevewBrowser"
+                            Focusable="False"
+                            Margin="5,5,5,5" 
+                            LoadCompleted="prevewBrowser_LoadCompleted_1" />
+            </TabItem>
+
+            <TabItem Header="快速引用">
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label FontWeight="Bold">引用记录</Label>
+                    <ListBox x:Name="LinkListBox" 
+                             Grid.Row="1" Grid.ColumnSpan="2"
+                             Height="240"
+                             ItemsSource="{Binding Path=LinkItemViewModel.LinkItems}"
+                             IsSynchronizedWithCurrentItem="True"
+                             SelectedItem="{Binding Path=LinkItemViewModel.SelectedLinkItem}">
+                    </ListBox>
+
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.ColumnSpan="2" Margin="16,6,16,32" Padding="4"
+                            Command="{Binding Path=LinkItemViewModel.InsertLinkCommand}">复制</Button>
+                        <Button Grid.Column="2" Margin="2,6,2,32" Padding="4"
+                            Command="{Binding Path=LinkItemViewModel.DeleteLinkCommand}">删除</Button>
+
+                        <StackPanel Grid.Row="2" Grid.ColumnSpan="3"
+                                    Orientation="Horizontal">
+                            <Label Margin="2" Padding="4">引用地址:</Label>
+                            <TextBox Margin="2" Padding="4"
+                                Text="{Binding Path=LinkItemViewModel.LinkPath, UpdateSourceTrigger=PropertyChanged}" Width="240"/>
+                            <Button Margin="2" Padding="4"
+                                Command="{Binding Path=LinkItemViewModel.OpenLinkCommand}">...</Button>
+                        </StackPanel>
+                        <StackPanel Grid.Row="3" Grid.ColumnSpan="3" 
+                                    Orientation="Horizontal">
+                            <Label Margin="2" Padding="4">标题:</Label>
+                            <TextBox Padding="4" Width="240"
+                             Text="{Binding Path=LinkItemViewModel.LinkName, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.Margin>
+                                    27,2,0,0
+                                </TextBox.Margin>
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel Grid.Row="4" Grid.ColumnSpan="2">
+                            <RadioButton x:Name="isImageRadioButton"
+                                 Margin="44,6,6,6" GroupName="ReferenceKind" 
+                                 IsChecked="{Binding Path=LinkItemViewModel.IsImage, Mode=TwoWay}">本地图片</RadioButton>
+                            <RadioButton Margin="44,6,6,6" GroupName="ReferenceKind">URI链接</RadioButton>
+                        </StackPanel>
+
+                        <Button Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" Padding="4" Margin="2,16" 
+                            Command="{Binding Path=LinkItemViewModel.AddLinkCommand}">添加</Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+
+</mvvm:FileEditorWindowView>
