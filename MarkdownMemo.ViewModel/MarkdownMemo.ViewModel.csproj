@@ -96,10 +96,6 @@
       <Project>{FED0C759-F1B5-4945-9BBB-2D2D821E8C4B}</Project>
       <Name>My.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MarkdownMemo.Model\MarkdownMemo.Model.csproj">
-      <Project>{B0D462DB-59CF-4B01-A693-193F55030448}</Project>
-      <Name>MarkdownMemo.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\My.Mvvm\My.Mvvm.csproj">
       <Project>{CB8F5BA9-28AE-4584-8320-040677A1570E}</Project>
       <Name>My.Mvvm</Name>
