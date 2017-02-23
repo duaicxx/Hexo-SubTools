@@ -81,7 +81,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelView\ModelData.cs" />
+    <Compile Include="ModelView\ModelLogData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -112,6 +112,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Markdown-Hexo-Worker\Markdown-Hexo-Worker.csproj">
+      <Project>{6DE22185-7509-4332-AEBD-FC34058007F4}</Project>
+      <Name>Markdown-Hexo-Worker</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,5 @@
 ﻿using Markdown_Hexo.ModelView;
+using Markdown_Hexo_Worker;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Markdown_Hexo
     {
         BackgroundWorker worker = new BackgroundWorker();
         private const string notInstallMsg = "不是内部或外部命令";
-        ModelData md = new ModelData();
+        ModelLogData md = new ModelLogData();
         public MainWindow()
         {
             InitializeComponent();
@@ -36,11 +37,13 @@ namespace Markdown_Hexo
             worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
             //初始化绑定数据
             this.txtLog.DataContext = md;
+            this.MBSS.DataContext = md;
+            this.WorkersStatus.DataContext = md;
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            execProgress.Value = 0;
+            md.RemoveWorker(sender.GetHashCode());
         }
 
         /// <summary>
@@ -51,7 +54,7 @@ namespace Markdown_Hexo
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             md.Log += e.UserState.ToString();
-            execProgress.Value = e.ProgressPercentage;
+            md.findById(sender.GetHashCode()).Status = e.ProgressPercentage;
         }
 
         /// <summary>
@@ -81,11 +84,6 @@ namespace Markdown_Hexo
             }
             worker.ReportProgress(100, log);
         }
-        private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-                   Console.WriteLine();
-        }
-
        
         private static string exec(string str)
         {
@@ -120,6 +118,7 @@ namespace Markdown_Hexo
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             worker.RunWorkerAsync();
+            md.AddWorker(worker.GetHashCode(), "初始化任务", 0);
         }
 
         private void OpenFolder_Click(object sender, RoutedEventArgs e)
@@ -133,16 +132,16 @@ namespace Markdown_Hexo
             string m_Dir = m_Dialog.SelectedPath.Trim();
         }
 
-        private async void ConfigHexo_Click(object sender, RoutedEventArgs e)
+        private void ConfigHexo_Click(object sender, RoutedEventArgs e)
         {
-            dialog();
-            // DialogHostEx.ShowDialog(MBSS, "sss");
-            //md.Log += exec(" npm install hexo - cli - g");
+            //md.Msg = "sadasdas";
+            //var result = DialogHost.Show(MBSS);
+            md.Log += exec(" npm install hexo - cli - g");
         }
 
-        private async void dialog()
+        private void WorkersStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var result =  DialogHost.Show(MBSS);
+            md.Work = (WorkStatus)e.AddedItems[0];
         }
     }
 }

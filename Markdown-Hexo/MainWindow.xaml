@@ -18,39 +18,44 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-   
+
     <materialDesign:DialogHost>
         <materialDesign:DialogHost.DialogContent>
             <StackPanel Margin="16"  Name="MBSS">
-                <TextBlock>England win the World Cup:</TextBlock>
-                <TextBlock Margin="0 8 0 0" Text="{Binding }" />
-                <TextBlock Margin="0 8 0 0" >You will never see that again.</TextBlock>
-                <Button  Margin="0 8 0 0" IsDefault="True" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{DynamicResource MaterialDesignFlatButton}">AWESOME</Button>
+                <TextBlock></TextBlock>
+                <TextBlock Margin="0 8 0 0" Text="{Binding Path=Msg}" />
+                <TextBlock Margin="0 8 0 0" ></TextBlock>
+                <Button  Margin="0 8 0 0" IsDefault="True" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{DynamicResource MaterialDesignFlatButton}">确认</Button>
             </StackPanel>
         </materialDesign:DialogHost.DialogContent>
         <Canvas  >
-            <ProgressBar Value="0" Height="7" Name="execProgress" Canvas.Left="13" RenderTransformOrigin="0.5,0.5" Canvas.Top="6" Width="614" >
-            <ProgressBar.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="-1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </ProgressBar.RenderTransform>
-        </ProgressBar>
-        <Button  Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="123" Canvas.Top="24" Click="OpenFolder_Click" >打开</Button>
-        <TextBox Canvas.Left="237" Canvas.Top="30" Width="383" >Hexo配置目录</TextBox>
+            <ComboBox Name="WorkersStatus" SelectionChanged="WorkersStatus_SelectionChanged" HorizontalContentAlignment="Center" Width="84"  Text="任务状态" RenderTransformOrigin="0.81,0.071" Canvas.Left="8" Canvas.Top="-8" SelectedValuePath="Id"   
+ ItemsSource="{Binding Workers}" SelectedIndex="0"
+                      DisplayMemberPath="Name"  
+ SelectedItem="{Binding Work}">
+            </ComboBox>
+            <ProgressBar Height="9" Name="execProgress" Value="{Binding Work.Status}" Canvas.Left="100" RenderTransformOrigin="0.5,0.5" Canvas.Top="6" Width="527" >
+                <ProgressBar.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleY="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </ProgressBar.RenderTransform>
+            </ProgressBar>
+            <Button  Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="123" Canvas.Top="24" Click="OpenFolder_Click" >打开</Button>
+            <TextBox Canvas.Left="237" Canvas.Top="30" Width="383" >Hexo配置目录</TextBox>
 
-        <GroupBox Width="627" Header="操作日志" Style="{DynamicResource MaterialDesignGroupBox}" materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0" Canvas.Left="2" Canvas.Top="205" Height="341" Background="#00000000">
-            <ScrollViewer VerticalScrollBarVisibility="Visible">
-                <TextBox Name="txtLog" Text="{Binding Path=Log}" TextWrapping="Wrap">
+            <GroupBox Width="627" Header="操作日志" Style="{DynamicResource MaterialDesignGroupBox}" materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0" Canvas.Left="2" Canvas.Top="205" Height="341" Background="#00000000">
+                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    <TextBox Name="txtLog" Text="{Binding Path=Log}" TextWrapping="Wrap">
 
-                </TextBox>
-            </ScrollViewer>
-        </GroupBox>
-        <Button  Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="5" Canvas.Top="24" Click="ConfigHexo_Click" Content="配置Hexo" />
-    </Canvas>
+                    </TextBox>
+                </ScrollViewer>
+            </GroupBox>
+            <Button  Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="5" Canvas.Top="24" Click="ConfigHexo_Click" Content="配置Hexo" />
+        </Canvas>
     </materialDesign:DialogHost>
 
 </Window>
