@@ -16,20 +16,12 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <DataTemplate DataType="{x:Type system:DateTime}">
-                <StackPanel Margin="16">
-                    <TextBlock>England win the World Cup:</TextBlock>
-                    <TextBlock Margin="0 8 0 0" Text="{Binding }" />
-                    <TextBlock Margin="0 8 0 0" >You will never see that again.</TextBlock>
-                    <Button  Margin="0 8 0 0" IsDefault="True" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{DynamicResource MaterialDesignFlatButton}">AWESOME</Button>
-                </StackPanel>
-            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
    
-    <materialDesign:DialogHost Name="MBSS">
+    <materialDesign:DialogHost>
         <materialDesign:DialogHost.DialogContent>
-            <StackPanel Margin="16">
+            <StackPanel Margin="16"  Name="MBSS">
                 <TextBlock>England win the World Cup:</TextBlock>
                 <TextBlock Margin="0 8 0 0" Text="{Binding }" />
                 <TextBlock Margin="0 8 0 0" >You will never see that again.</TextBlock>
@@ -37,14 +29,6 @@
             </StackPanel>
         </materialDesign:DialogHost.DialogContent>
         <Canvas  >
-            <Button Name="Message" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                            Width="128" Canvas.Left="73" Canvas.Top="91">
-                <Button.CommandParameter>
-                    <!-- the simplest view model of all, a DateTime. the view can be found in the resources of MainWindow.xaml  -->
-                    <system:DateTime>1966-JUL-30</system:DateTime>
-                </Button.CommandParameter>
-                PASS MODEL
-            </Button>
             <ProgressBar Value="0" Height="7" Name="execProgress" Canvas.Left="13" RenderTransformOrigin="0.5,0.5" Canvas.Top="6" Width="614" >
             <ProgressBar.RenderTransform>
                 <TransformGroup>

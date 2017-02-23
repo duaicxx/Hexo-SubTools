@@ -133,12 +133,16 @@ namespace Markdown_Hexo
             string m_Dir = m_Dialog.SelectedPath.Trim();
         }
 
-        private  void ConfigHexo_Click(object sender, RoutedEventArgs e)
+        private async void ConfigHexo_Click(object sender, RoutedEventArgs e)
         {
-            MBSS.ShowDialog("sss");
+            dialog();
+            // DialogHostEx.ShowDialog(MBSS, "sss");
             //md.Log += exec(" npm install hexo - cli - g");
         }
 
-       
+        private async void dialog()
+        {
+            var result =  DialogHost.Show(MBSS);
+        }
     }
 }
