@@ -42,6 +42,7 @@
     <Compile Include="AsyncWorker.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DelegateProgressValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkStatus.cs" />
   </ItemGroup>

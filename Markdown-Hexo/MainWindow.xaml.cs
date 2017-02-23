@@ -39,6 +39,7 @@ namespace Markdown_Hexo
             this.txtLog.DataContext = md;
             this.MBSS.DataContext = md;
             this.WorkersStatus.DataContext = md;
+            this.execProgress.DataContext = md;
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -53,8 +54,10 @@ namespace Markdown_Hexo
         /// <param name="e"></param>
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            md.Log += e.UserState.ToString();
-            md.findById(sender.GetHashCode()).Status = e.ProgressPercentage;
+            md.Log= e.UserState.ToString() + md.Log;
+            WorkStatus ws = md.findById(sender.GetHashCode());
+            ws.Status += e.ProgressPercentage;
+            md.Work = ws;
         }
 
         /// <summary>
@@ -141,7 +144,8 @@ namespace Markdown_Hexo
 
         private void WorkersStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            md.Work = (WorkStatus)e.AddedItems[0];
+           md.Work = ((WorkStatus)e.AddedItems[0]);
+            
         }
     }
 }

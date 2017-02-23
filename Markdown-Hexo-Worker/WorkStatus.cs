@@ -17,5 +17,6 @@ namespace Markdown_Hexo_Worker
         public string Name { get; set; }
         public int Status { get; set; }
 
+
     }
 }
