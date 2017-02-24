@@ -40,6 +40,7 @@ namespace Markdown_Hexo
             this.MBSS.DataContext = md;
             this.WorkersStatus.DataContext = md;
             this.execProgress.DataContext = md;
+            this.promptMsg.DataContext = md;
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -56,7 +57,7 @@ namespace Markdown_Hexo
         {
             md.Log= e.UserState.ToString() + md.Log;
             WorkStatus ws = md.findById(sender.GetHashCode());
-            ws.Status += e.ProgressPercentage;
+            ws.Status = e.ProgressPercentage;
             md.Work = ws;
         }
 
@@ -139,7 +140,8 @@ namespace Markdown_Hexo
         {
             //md.Msg = "sadasdas";
             //var result = DialogHost.Show(MBSS);
-            md.Log += exec(" npm install hexo - cli - g");
+            //md.Log += exec(" npm install hexo - cli - g");
+            promptMsg.IsActive = !promptMsg.IsActive;
         }
 
         private void WorkersStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)

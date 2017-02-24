@@ -7,6 +7,7 @@ namespace Markdown_Hexo_Worker
 {
    public class WorkStatus
     {
+        private int _status;
         public WorkStatus(int id ,string name,int status)
         {
             Name = name;
@@ -15,7 +16,17 @@ namespace Markdown_Hexo_Worker
         }
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Status { get; set; }
+        public int Status {
+            get { return _status; }
+            set {
+                if (value == 100)
+                {
+                    _status = 0;
+                } else {
+                    _status = value;
+                }
+            }
+        }
 
 
     }

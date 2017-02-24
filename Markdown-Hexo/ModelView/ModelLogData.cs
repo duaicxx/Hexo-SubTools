@@ -84,5 +84,19 @@ namespace Markdown_Hexo.ModelView
             set { _status = value; OnPropertyChanged("Status"); }
             get { return _status; }
         }
+        //toast弹窗提示信息
+        private string _promptMsg;
+        public string PromptMsg
+        {
+            set { _promptMsg = value; OnPropertyChanged("PromptMsg"); }
+            get { return _promptMsg; }
+        }
+        //toast是否显示
+        private bool _isShow;
+        public bool IsShow
+        {
+            set { _isShow = value; OnPropertyChanged("IsShow"); }
+            get { return _isShow; }
+        }
     }
 }

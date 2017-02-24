@@ -20,6 +20,7 @@
     </Window.Resources>
 
     <materialDesign:DialogHost>
+
         <materialDesign:DialogHost.DialogContent>
             <StackPanel Margin="16"  Name="MBSS">
                 <TextBlock></TextBlock>
@@ -54,7 +55,13 @@
                 </ScrollViewer>
             </GroupBox>
             <Button  Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="5" Canvas.Top="52" Click="ConfigHexo_Click" Content="配置Hexo" />
+            <!-- simplest form -->
+            <materialDesign:Snackbar Name="promptMsg" Message="{Binding Path=PromptMsg}" 
+                                             IsActive="{Binding Path=IsShow}"/>
         </Canvas>
+        
+        
     </materialDesign:DialogHost>
 
+    
 </Window>
